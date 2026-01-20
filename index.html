@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nayyar's Digital Menu</title>
+    <!-- 1. Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Ensures the sticky nav doesn't hide section titles when jumping */
+        section[id] {
+            scroll-margin-top: 60px;
+            /* Adjust this value to match your sticky nav's height */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-6 shadow-lg text-center rounded-b-xl">
+        <img src="public/images/logo.jpg" class="mx-auto" alt="Logo">
+    </header>
+
+    <!-- Sticky Category Navigation -->
+    <nav class="sticky top-0 bg-white shadow-md z-10">
+        <div class="container mx-auto px-4 py-2 overflow-x-auto whitespace-nowrap">
+            <a href="#snacks" class="inline-block py-2 px-4 font-semibold text-gray-700 hover:text-amber-600">Snacks</a>
+            <a href="#pizza" class="inline-block py-2 px-4 font-semibold text-gray-700 hover:text-amber-600">Pizza</a>
+            <a href="#sandwiches"
+                class="inline-block py-2 px-4 font-semibold text-gray-700 hover:text-amber-600">Sandwiches</a>
+            <a href="#drinks" class="inline-block py-2 px-4 font-semibold text-gray-700 hover:text-amber-600">Drinks &
+                Shakes</a>
+            <a href="#ice-cream"
+                class="inline-block py-2 px-4 font-semibold text-gray-700 hover:text-amber-600">Ice-Cream</a>
+            <a href="#sweets" class="inline-block py-2 px-4 font-semibold text-gray-700 hover:text-amber-600">Sweets</a>
+            <a href="#coffee-tea" class="inline-block py-2 px-4 font-semibold text-gray-700 hover:text-amber-600">Coffee
+                & Tea</a>
+            <a href="#bread" class="inline-block py-2 px-4 font-semibold text-gray-700 hover:text-amber-600">Bread</a>
+        </div>
+    </nav>
+
+    <!-- Main Menu Content -->
+    <main class="container mx-auto p-4 max-w-3xl">
+
+        <!-- Function to create a menu item card -->
+        <script>
+            function parsePrice(price) {
+                if (price.includes("MRP")) return 0;
+                return Number(price.replace("/-", ""));
+            }
+
+            function createMenuItem(name, price, notes) {
+                let priceValue = parsePrice(price);
+                let priceText = price.includes("MRP") ? price : `₹${priceValue}`;
+
+                return `
+        <div class="bg-white rounded-lg shadow-md mb-4 p-4">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-lg font-semibold">${name}</h3>
+                    ${notes ? `<p class="text-sm text-gray-600 italic">${notes}</p>` : ""}
+                </div>
+                <div class="text-lg font-bold text-amber-700">${priceText}</div>
+            </div>
+
+            <button 
+                onclick="addToCart('${name}', ${priceValue})"
+                class="mt-3 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded">
+                Add to Cart
+            </button>
+        </div>
+        `;
+            }
+        </script>
+
+
+        <!-- Snacks Section -->
+        <section id="snacks">
+            <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b-2 border-amber-500 pb-2">Snacks</h2>
+            <div id="snacks-list"></div>
+            <script>
+                const snacks = [
+                    { name: 'Paneer Pakora', price: '160/-', notes: '(8 pc.) Thick slices of paneer filled with our signature Nayyar special spices, coated in a light gram flour (besan) batter, and deep-fried to golden perfection. Served with Tamarind Sauce and Green Chill Sauce.' },
+                    { name: 'Paneer Pakora', price: '90/-', notes: '(4 pc.)  Thick slices of paneer filled with our signature Nayyar special spices, coated in a light gram flour (besan) batter, and deep-fried to golden perfection.  Served with Tamarind Sauce and Green Chill Sauce.' },
+                    { name: 'Paneer Fingers', price: '160/-', notes: '(8 pc.) Thick Fingers sized pieces of paneer filled  coated in a light gram flour (besan) batter, and deep-fried to golden perfection. Served with Tamarind Sauce and Green Chill Sauce.' },
+                    { name: 'Aloo Tikki', price: '90/-', notes: '(2 pc.) Thin layer of potatoes filled with Chana Dal full of spices curumed and deep fried untill golden brown. Served with our special chutney.' },
+                    { name: 'Burger with Cheese', price: '90/-', notes: 'Indulge in Herb Chilli Aloo Patty Burger — crispy aloo patty with melted cheese, fresh lettuce, onions, tomatoes, and cucumber, layered with flavorful sauces for the perfect bite' },
+                    { name: 'Spicy Paneer Burger', price: '140/-', notes: 'Savor our Crispy Paneer Patty Burger — golden-red chilli and breadcrumb-coated paneer patty with melted cheese, fresh lettuce, onions, tomatoes, and cucumber, topped with rich, flavorful sauces' },
+                    { name: 'Noodles', price: '170/-', notes: 'Savor our Spicy Thin Noodles — perfectly tossed with carrots, capsicum, and onions in bold, flavorful sauces. (No cabbage used — just pure taste!)' },
+                    { name: 'Cheese Noodles', price: '220/-', notes: 'Enjoy our Spicy Paneer Noodles — thin noodles tossed with soft paneer cubes, carrots, capsicum, and onions in fiery sauces. (No cabbage used — just pure flavor!)' },
+                    { name: 'Hakka Noodles', price: '240/-', notes: 'Dive into our Special Veg Paneer Noodles — thin, flavorful noodles stir-fried with bell peppers, mushrooms, baby corn, paneer cubes, carrots, capsicum, and onions in spicy sauces. (No cabbage used — just pure, bold taste!)' },
+                    { name: 'Garlic Noodles', price: '250/-', notes: 'Savor our Spicy Garlic Noodles — thin noodles wok-tossed with fresh garlic, carrots, capsicum, and onions in bold, fiery sauces. (No cabbage used — just pure flavor!)' },
+                    { name: 'Chilly Garlic Noodles', price: '250/-', notes: 'Enjoy our Chilli Garlic Noodles — thin noodles tossed with aromatic garlic, carrots, capsicum, and onions in rich, spicy chilli garlic sauce. (No cabbage used — just authentic flavor!)' },
+                    { name: 'Manchurian', price: '290/-', notes: 'Mix Vegitable Fried Balls (Manchurian Sauce) Gravy .' },
+                    { name: 'Spring Roll', price: '130/-', notes: 'Thin Layer Of Wrap Filled With Vegitables.' },
+                    { name: 'Pav Bhaji Butter', price: '130/-', notes: 'Boiled Vegitable mashed ,  Garnished With Indian Spices and Butter (2 Pav).' },
+                    { name: 'Butter Toast', price: '90/-', notes: 'Bread (Toasted) With Butter.' },
+                    { name: 'Veg. Platter', price: '280/-', notes: 'Snack Platter — a delicious mix of crispy fries, flavorful champ, golden spring rolls, and hearty hara bhara kabab for the ultimate munching experience.' },
+                    { name: 'Chaana Bhatura', price: '105/-', notes: 'Gravy Chana Served with Dahi Bhalla And Spiced Potatoes with 2 Bhature  (Must Try).' },
+                    { name: 'Tawa Tikki', price: '100/-', notes: 'Tikki Served with the toppings of salad' },
+                    { name: 'Dahi Bhalla', price: '90/-', notes: 'Savor our Dahi Bhalla — soft lentil dumplings soaked in creamy dahi, topped with mint and sweet sauces, and finished with a sprinkle of mix masala for a refreshing, flavorful treat.' },
+                    { name: 'Bhalla Papri', price: '90/-', notes: 'Indulge in our Dahi Bhalla Papri Chaat — soft bhallas and crispy papri drizzled with mint and sweet sauces, creamy dahi, and a dash of mix masala for a perfect sweet-tangy bite.' },
+                    { name: 'Samosa Chaat', price: '60/-', notes: 'Delight in our Samosa Chaat — crispy samosas topped with cool dahi, mint and sweet sauces, crunchy peanuts, sevia, and a sprinkle of mix masala for the perfect burst of flavors.' },
+                    { name: 'Papri Chaat', price: '90/-', notes: 'Enjoy our Papri Chaat — crispy papri layered with smooth dahi, zesty mint sauce, sweet tamarind sauce, and a dash of mix masala for the perfect blend of crunch and flavor.' },
+                    { name: 'Samosa', price: '40/-', notes: '(2 pc.) Crispy golden samosas stuffed with perfectly spiced potatoes, served with a luscious sweet chutney — a bite of pure comfort and flavor.' },
+                    { name: 'Veg. Champ', price: '130/-', notes: 'Classic Soya Chaap — tender and flavorful, paired with crisp onions and fresh lettuce for a delicious, satisfying bite.' },
+                    { name: 'Malai Champ', price: '170/-', notes: 'Creamy Soya Chaap — grilled to perfection with onions and fresh lettuce, enriched with extra Amul cream for a rich, mouthwatering flavor.' },
+                    { name: 'Crispy Veg. Champ', price: '160/-', notes: 'Enjoy our Extra Crispy Soya Chaap Roll — perfectly grilled chaap with fresh onions and crisp lettuce for a deliciously crunchy, flavorful bite.' },
+                    { name: 'Paneer Bhurji', price: '300/-', notes: 'Experience our Special Mashed Paneer — a creamy blend of soft paneer, sautéed onions, rich masala, and a touch of milk for a smooth, indulgent flavor. (Must Try!)' },
+                    { name: 'Cheese Chilly', price: '300/-', notes: 'Indulge in our Special Paneer — tossed with onions, capsicum, and bell peppers, infused with rich sauces and aromatic masala for a burst of irresistible flavor.' },
+                    { name: 'Mushroom Chilly', price: '300/-', notes: 'Savor our Spicy Mushroom Delight — tender mushrooms stir-fried with onions, capsicum, and bell peppers, blended in flavorful sauces and aromatic masala for a perfect bite ' },
+                    { name: 'Mushroom Pakora', price: '220/-', notes: 'Marinated Mashroom  coated in a light gram flour (besan) batter, and deep-fried to golden perfection. Served with Tamarind Sauce and Green Chill Sauce.' },
+                    { name: 'French Fries', price: '130/-', notes: 'Crispy, golden French Fries — perfectly seasoned and fried to perfection for the ultimate crunchy snack.' },
+                    { name: 'Peri Peri Fries', price: '180/-', notes: 'Turn up the heat with our Peri Peri Fries — crispy golden fries tossed in a bold, spicy peri peri seasoning for a fiery, flavorful kick.' },
+                    { name: 'Cheesy Fries', price: '240/-', notes: 'Indulge in our Cheese Fries — crispy golden fries smothered in rich, creamy melted cheese for the perfect cheesy delight.' },
+                ];
+                document.getElementById('snacks-list').innerHTML = snacks.map(item => createMenuItem(item.name, item.price, item.notes)).join('');
+            </script>
+        </section>
+
+        <!-- Pizza Section -->
+        <section id="pizza">
+            <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b-2 border-amber-500 pb-2">Pizza</h2>
+            <div id="pizza-list"></div>
+            <script>
+                const pizza = [
+                    { name: "Nayyar's Special Pizza", price: '330/-', notes: '' },
+                    { name: 'Cheese Chilly Pizza', price: '350/-', notes: '' },
+                    { name: 'Pizza Mushroom', price: '270/-', notes: '' },
+                    { name: 'Pizza Onion Capsicum', price: '270/-', notes: '' },
+                    { name: 'Plain Pizza', price: '230/-', notes: '' },
+                    { name: 'Corn Pizza', price: '250/-', notes: '' },
+                    { name: 'Farm House Pizza', price: '340/-', notes: '' },
+                ];
+                document.getElementById('pizza-list').innerHTML = pizza.map(item => createMenuItem(item.name, item.price, item.notes)).join('');
+            </script>
+        </section>
+
+        <!-- Sandwiches Section -->
+        <section id="sandwiches">
+            <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b-2 border-amber-500 pb-2">Sandwiches</h2>
+            <div id="sandwiches-list"></div>
+            <script>
+                const sandwiches = [
+                    { name: 'Grilled Sandwich Brown Bread', price: '230/-', notes: '' },
+                    { name: 'Grilled Sandwich', price: '190/-', notes: '(4 pc.)' },
+                    { name: 'Cheese Grilled Sandwich', price: '260/-', notes: '(4 pc.)' },
+                    { name: 'Club Sandwich', price: '40/-', notes: '' },
+                    { name: 'Cheese Sandwich', price: '60/-', notes: '' },
+                ];
+                document.getElementById('sandwiches-list').innerHTML = sandwiches.map(item => createMenuItem(item.name, item.price, item.notes)).join('');
+            </script>
+        </section>
+
+        <!-- Drinks & Shakes Section -->
+        <section id="drinks">
+            <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b-2 border-amber-500 pb-2">Drinks & Shakes</h2>
+            <div id="drinks-list"></div>
+            <script>
+                const drinks = [
+                    { name: 'Milk Badam', price: '65/-', notes: '' },
+                    { name: 'Milk Kesar', price: '65/-', notes: '' },
+                    { name: 'Lassi', price: '65/-', notes: '' },
+                    { name: 'Mango Lassi', price: '120/-', notes: 'Seasonal' },
+                    { name: 'Strawberry Shake', price: '140/-', notes: '' },
+                    { name: 'Banana Shake', price: '140/-', notes: '' },
+                    { name: 'Chocolate Shake', price: '150/-', notes: '' },
+                    { name: 'Mango Shake', price: '150/-', notes: '' },
+                    { name: 'Oreo Shake', price: '160/-', notes: '' },
+                    { name: 'Lotus Biscoff Shake', price: '200/-', notes: '' },
+                    { name: 'Butter Scotch Shake', price: '150/-', notes: '' },
+                    { name: 'Kitkat Shake', price: '170/-', notes: '' },
+                    { name: 'Fresh Lime Soda', price: '70/-', notes: '' },
+                    { name: 'Can', price: 'On MRP', notes: '' },
+                    { name: 'Diet Coke', price: '40/-', notes: '' },
+                    { name: 'Juice', price: '40/-', notes: '' },
+                    { name: 'Cold Drink Glass', price: '40/-', notes: '' },
+                    { name: 'Mineral Water', price: 'On MRP', notes: '' },
+                    { name: 'Red Bull', price: 'On MRP', notes: '' },
+                    { name: 'Hell', price: 'On MRP', notes: '' },
+                ];
+                document.getElementById('drinks-list').innerHTML = drinks.map(item => createMenuItem(item.name, item.price, item.notes)).join('');
+            </script>
+        </section>
+
+        <!-- Ice-Cream Section -->
+        <section id="ice-cream">
+            <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b-2 border-amber-500 pb-2">Ice-Cream</h2>
+            <div id="ice-cream-list"></div>
+            <script>
+                const iceCream = [
+                    { name: 'Lambi Kulfi', price: '50/-', notes: '' },
+                    { name: 'Pista Kulfi', price: '40/-', notes: '' },
+                    { name: 'Matka Kulfi', price: '90/-', notes: '' },
+                    { name: 'Rabri Faluda Glassi', price: '130/-', notes: '' },
+                    { name: 'Tutti Frutti', price: '90/-', notes: '' },
+                    { name: 'Fruit Cream', price: '90/-', notes: '' },
+                    { name: 'Cassata Slice', price: '80/-', notes: '' },
+                    { name: 'Oreo Cup', price: '80/-', notes: '' },
+                    { name: 'Black Current', price: '80/-', notes: '' },
+                    { name: 'Vanilla Cup', price: '70/-', notes: '' },
+                    { name: 'Butter Scotch Cup', price: '80/-', notes: '' },
+                    { name: 'Mango Faluda Glassi', price: '160/-', notes: '' },
+                    { name: 'Mango Duet', price: '20/-', notes: '' },
+                    { name: 'Mango Cup', price: '70/-', notes: '' },
+                    { name: 'Cornetto', price: '40/-', notes: '' },
+                ];
+                document.getElementById('ice-cream-list').innerHTML = iceCream.map(item => createMenuItem(item.name, item.price, item.notes)).join('');
+            </script>
+        </section>
+
+        <!-- Sweets Section -->
+        <section id="sweets">
+            <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b-2 border-amber-500 pb-2">Sweets</h2>
+            <div id="sweets-list"></div>
+            <script>
+                const sweets = [
+                    { name: 'Gulab Jamun', price: '70/-', notes: '(2 pc.)' },
+                    { name: 'Gajrela', price: '80/-', notes: 'Seasonal' },
+                    { name: 'Spongy Rasgulla', price: '70/-', notes: '(2 pc.)' },
+                    { name: 'Kesar Ras Malai', price: '90/-', notes: '(2 pc.)' },
+                ];
+                document.getElementById('sweets-list').innerHTML = sweets.map(item => createMenuItem(item.name, item.price, item.notes)).join('');
+            </script>
+        </section>
+
+        <!-- Coffee & Tea Section -->
+        <section id="coffee-tea">
+            <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b-2 border-amber-500 pb-2">Coffee & Tea</h2>
+            <div id="coffee-tea-list"></div>
+            <script>
+                const coffeeTea = [
+                    { name: 'Hot Coffee', price: '70/-', notes: '' },
+                    { name: 'Espresso', price: '100/-', notes: '' },
+                    { name: 'Cold Coffee', price: '140/-', notes: '' },
+                    { name: 'C/Coff & Ice/Crm.', price: '170/-', notes: '' },
+                    { name: 'Tea', price: '30/-', notes: '' },
+                    { name: 'Green Tea', price: '30/-', notes: '' },
+                ];
+                document.getElementById('coffee-tea-list').innerHTML = coffeeTea.map(item => createMenuItem(item.name, item.price, item.notes)).join('');
+            </script>
+        </section>
+
+        <!-- Bread Section -->
+        <section id="bread">
+            <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b-2 border-amber-500 pb-2">Bread</h2>
+            <div id="bread-list"></div>
+            <script>
+                const bread = [
+                    { name: 'Bread Slice', price: '10/-', notes: '(2 pc.)' },
+                    { name: 'Pav', price: '20/-', notes: '' },
+                ];
+                document.getElementById('bread-list').innerHTML = bread.map(item => createMenuItem(item.name, item.price, item.notes)).join('');
+            </script>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center p-6 mt-8">
+        <p class="text-base text-gray-700 font-semibold">All prices are including GST</p>
+    </footer>
+
+    <!-- Smooth Scroll JS -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function addToCart(name, price) {
+            if (price === 0) {
+                alert("Item price is MRP based");
+                return;
+            }
+
+            const item = cart.find(i => i.name === name);
+
+            if (item) {
+                item.qty++;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+
+            saveCart();
+            renderCart();
+        }
+
+        function removeItem(name) {
+            cart = cart.filter(item => item.name !== name);
+            saveCart();
+            renderCart();
+        }
+
+        function saveCart() {
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        function renderCart() {
+            const cartDiv = document.getElementById("cart-items");
+            cartDiv.innerHTML = "";
+
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                subtotal += item.price * item.qty;
+
+                cartDiv.innerHTML += `
+                <div class="flex justify-between items-center border p-2 rounded">
+                    <div>
+                        <p class="font-semibold">${item.name}</p>
+                        <p class="text-sm">₹${item.price} × ${item.qty}</p>
+                    </div>
+                    <button 
+                        onclick="removeItem('${item.name}')"
+                        class="text-red-600 font-bold">✕</button>
+                </div>
+            `;
+            });
+
+            document.getElementById("subtotal").innerText = subtotal;
+            document.getElementById("total").innerText = subtotal + 40;
+        }
+
+        function placeOrder() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
+            let billItemsDiv = document.getElementById("billItems");
+            billItemsDiv.innerHTML = "";
+
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                subtotal += item.price * item.qty;
+
+                billItemsDiv.innerHTML += `
+                <div class="flex justify-between">
+                    <span>${item.name} (x${item.qty})</span>
+                    <span>₹${item.price * item.qty}</span>
+                </div>
+            `;
+            });
+
+            document.getElementById("billSubtotal").innerText = subtotal;
+            document.getElementById("billTotal").innerText = subtotal + 40;
+
+            document.getElementById("billModal").classList.remove("hidden");
+        }
+
+        renderCart();
+
+
+        function closeBill() {
+            // Close bill modal
+            document.getElementById("billModal").classList.add("hidden");
+
+            // Clear cart
+            cart = [];
+            localStorage.removeItem("cart");
+
+            // Reset UI
+            renderCart();
+        }
+    </script>
+
+
+
+    <!-- CART PANEL -->
+    <div
+        class="fixed bottom-0 right-0 w-full md:w-96 bg-white shadow-xl border-t md:border-l p-4 max-h-[70vh] overflow-y-auto">
+        <h2 class="text-xl font-bold mb-3">🛒 Cart</h2>
+
+        <div id="cart-items" class="space-y-2"></div>
+
+        <hr class="my-3">
+
+        <p class="font-semibold">Subtotal: ₹<span id="subtotal">0</span></p>
+        <p class="font-semibold">Delivery: ₹40</p>
+        <p class="font-bold text-lg">Total: ₹<span id="total">0</span></p>
+
+        <button onclick="placeOrder()" class="mt-3 w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">
+            Place Order
+        </button>
+    </div>
+
+
+
+    <!-- BILL MODAL -->
+    <div id="billModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white w-11/12 md:w-96 rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-4 text-center">🧾 Order Bill</h2>
+
+            <div id="billItems" class="space-y-2 text-sm"></div>
+
+            <hr class="my-3">
+
+            <p class="flex justify-between font-semibold">
+                <span>Subtotal</span>
+                <span>₹<span id="billSubtotal">0</span></span>
+            </p>
+            <p class="flex justify-between font-semibold">
+                <span>Delivery</span>
+                <span>₹40</span>
+            </p>
+            <p class="flex justify-between text-lg font-bold">
+                <span>Total</span>
+                <span>₹<span id="billTotal">0</span></span>
+            </p>
+
+            <button onclick="closeBill()" class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">
+                Confirm Order
+            </button>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
